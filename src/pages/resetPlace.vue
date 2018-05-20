@@ -2,10 +2,10 @@
   <div class="wrapper">
     <div class="searchWrapper">
       <div class="search">
-        <bst-input v-model="addressName" :placeHolder="placeHolder" style="" :iconShow="true"></bst-input>
+        <bst-input v-model="search" :placeHolder="placeHolder" style="" :iconShow="true" @input="autocomplete(search)"></bst-input>
       </div>
       <div class="btnGrounp">
-        <div class="btn location">
+        <div class="btn location"  @click="getLocation()">
           <img class="icon" src="@/assets/image/location-normal@2x.png"/>
           当前位置
         </div>
@@ -15,16 +15,25 @@
         </div>
       </div>
     </div>
+    <div class="result">
+      <div class="item" v-for="(item, index) in result" :key="index" @click="setInput(item)">
+        <img class="item-icon" src="@/assets/image/add-company-icon@2x.png" />
+        <div class="content">
+          <p class="title">{{item.name}}</p>
+          <p class="text">{{typeof item.address === 'string' ? item.address : item.district}}</p>
+        </div>
+      </div>
+    </div>
     <div class="historyWrapper" v-show="historyList.length>0">
-      <History :list="historyList" @clear="historyList = []"></History>
+      <History :list="historyList" @clear="clear" @itemClick="historyClick"></History>
     </div>
     <div class="map" v-show="mapShow">
-      <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :zoom="zoom" :plugin="plugin" :events="events" class="amap-demo">
-        <el-amap-marker vid="component-marker" :position="componentMarker.position" :content-render="componentMarker.contentRender" ></el-amap-marker>
+      <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :events="events" class="amap-demo">
+        <el-amap-marker vid="marker" :position="marker.position" :content="marker.content" :offset="marker.offset"></el-amap-marker>
       </el-amap>
 
       <div class="toolbar">
-        {{addressName}}
+        <div>{{addressName}}</div>
         <button @click="updateUserAddress()">确定</button>
       </div>
     </div>
@@ -32,15 +41,11 @@
 </template>
 
 <script>
-import { getData } from "@/assets/js/common.js";
+import { getData, setStorage, getStorage } from "@/assets/js/common.js";
 import BstInput from "@/components/bst-input/bst-input";
 import History from "@/components/history/history";
 import VueAMap from "vue-amap";
 let amapManager = new VueAMap.AMapManager();
-const exampleComponents = {
-  props: ["text"],
-  template: `<div>text from  parent: {{text}}</div>`
-};
 export default {
   name: "resetPlace",
   data() {
@@ -48,26 +53,36 @@ export default {
       longitude: "",
       latitude: "",
       addressName: "",
+      search: "",
       mapShow: false,
+      result: [],
       amapManager,
-      componentMarker: {
-        position: [121.5273285, 31.21315058],
-        contentRender: (h, instance) =>
-          h(
-            exampleComponents,
-            {
-              style: { backgroundColor: "#fff" },
-              props: { text: "father is here" }
-            },
-            ["xxxxxxx"]
-          )
+      marker: {
+        offset: [-13, -33],
+        position: [121.59996, 31.197646],
+        content:
+          '<img style="width:.55rem" src="' +
+          require("@/assets/image/location-icon@2x.png") +
+          '"/>'
       },
       zoom: 12,
       center: [121.59996, 31.197646],
       events: {
         init: o => {
-          console.log(o.getCenter());
-          console.log(this.$refs.map.$$getInstance());
+          let geolocation = new AMap.Geolocation({ enableHighAccuracy: true });
+          geolocation.getCurrentPosition((status, result) => {
+            if (result && result.position) {
+              console.log(result);
+
+              this.addressName = result.formattedAddress;
+              this.longitude = result.position.lng;
+              this.latitude = result.position.lat;
+              this.center = [this.longitude, this.latitude];
+              this.marker.position = [this.longitude, this.latitude];
+              this.loaded = true;
+              this.$nextTick();
+            }
+          });
         },
         moveend: () => {},
         zoomchange: () => {},
@@ -76,6 +91,7 @@ export default {
           let { lng, lat } = e.lnglat;
           this.longitude = lng;
           this.latitude = lat;
+          this.marker.position = [lng, lat];
           // 这里通过高德 SDK 完成。
           var geocoder = new AMap.Geocoder({
             radius: 1000,
@@ -93,18 +109,6 @@ export default {
           // this.add();
         }
       },
-      plugin: [
-        "ToolBar",
-        {
-          pName: "MapType",
-          defaultType: 0,
-          events: {
-            init(o) {
-              console.log(o);
-            }
-          }
-        }
-      ],
       showModal: false,
       place: "",
       placeHolder: "请输入目的地",
@@ -125,15 +129,14 @@ export default {
           }
         }
       ],
-      historyList: [
-        {
-          title: "人民广场",
-          text: "南京西路2000号"
-        }
-      ]
+      historyList: []
     };
   },
   methods: {
+    clear() {
+      this.historyList = [];
+      localStorage.removeItem("addressList");
+    },
     add() {
       let o = amapManager.getMap();
       let marker = new AMap.Marker({
@@ -149,6 +152,28 @@ export default {
         this.btnList[index].cb();
       }
     },
+    // 搜素自动补全
+    autocomplete(val, target) {
+      let autocomplete = new AMap.Autocomplete();
+      autocomplete.search(val, (status, result) => {
+        if (result && result.tips) {
+          console.log(result);
+          this.result = result.tips
+            .filter(item => {
+              return item.location.lat && item.location.lng;
+            })
+            .slice(0, 5);
+        } else {
+          this.result = [];
+        }
+      });
+    },
+    setInput(pos) {
+      this.search = pos.name;
+      this.longitude = pos.position.lng;
+      this.latitude = pos.position.lat;
+      this.result = [];
+    },
     updateUserAddress() {
       getData({
         url: "/api/v1/appuser/updateUserAddress",
@@ -156,10 +181,55 @@ export default {
           id: this.$route.query.id,
           longitude: this.longitude,
           latitude: this.latitude,
-          addressName: this.addressName
+          addressName: this.addressName || this.search
         },
         success: res => {
+          let position = {
+            longitude: this.longitude,
+            latitude: this.latitude,
+            addressName: this.addressName || this.search
+          };
+          // 记录去重
+          let history = getStorage("addressList");
+          history.forEach((element, index) => {
+            if (element.addressName === position.addressName) {
+              history.splice(index, 1);
+            }
+          });
+          history.unshift(position);
+          setStorage("addressList", history.slice(0, 5));
           this.$router.go(-1);
+        }
+      });
+    },
+    // 定位
+    getLocation() {
+      let geolocation = new AMap.Geolocation({ enableHighAccuracy: true });
+      geolocation.getCurrentPosition((status, result) => {
+        if (result && result.position) {
+          this.longitude = result.position.lng;
+          this.latitude = result.position.lat;
+          this.addressName = result.formattedAddress;
+          this.updateUserAddress();
+        }
+      });
+    },
+    historyClick(item) {
+      this.longitude = item.longitude;
+      this.latitude = item.latitude;
+      this.addressName = item.addressName;
+      this.updateUserAddress();
+    },
+    // 获取个人信息
+    queryUserAddress(userId) {
+      if (!userId) {
+        return;
+      }
+      getData({
+        url: "/api/v1/appuser/queryUserAddress",
+        data: { userId },
+        success: res => {
+          this.usualAddresses = res.obj;
         }
       });
     }
@@ -169,7 +239,7 @@ export default {
     History
   },
   created() {
-    console.log(this.$route.query);
+    this.historyList = getStorage("addressList");
   }
 };
 </script>
@@ -184,6 +254,58 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+
+  .result {
+    display: flex;
+    margin-top: 0.2rem;
+    flex-direction: column;
+    background: #fff;
+    position: absolute;
+    width: calc(100% - 0.4rem);
+    box-sizing: border-box;
+
+    .item {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-bottom: none;
+      height: 1.2rem;
+      padding: 0 0.3rem;
+
+      &:hover {
+        background-color: rgba(242, 242, 242, 0.5);
+      }
+
+      .item-icon {
+        width: 0.27rem;
+        height: 0.27rem;
+      }
+
+      .content {
+        float: left;
+        margin-left: 0.2rem;
+        flex: 1;
+      }
+
+      .title {
+        height: 0.4rem;
+        line-height: 0.4rem;
+        color: rgba(47, 51, 56, 1);
+        font-size: 0.28rem;
+      }
+
+      .text {
+        height: 0.3rem;
+        line-height: 0.3rem;
+        color: rgba(155, 155, 155, 1);
+        font-size: 0.22rem;
+        width: 5rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
 
   .map {
     position: absolute;
@@ -215,6 +337,10 @@ export default {
       justify-content: space-between;
       padding: 0 0.4rem;
       box-sizing: border-box;
+
+      div {
+        width: 5rem;
+      }
 
       button {
         width: 1.3rem;

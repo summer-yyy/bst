@@ -3,10 +3,10 @@
     <itemWrapper :title="title" :icon="icon" @iconClick="showModal = true">
       <slot>
         <div class="list">
-          <div class="item" v-for="(item, index) in list" :key="index">
+          <div class="item" v-for="(item, index) in list" :key="index" @click="itemClick(item)">
             <img class="icon" src="./clock-icon@2x.png">
             <div class="content">
-              <p class="title">{{item.title}}</p>
+              <p class="title">{{item.addressName}}</p>
               <p class="text">{{item.text}}</p>
             </div>
           </div>
@@ -56,6 +56,9 @@ export default {
       ) {
         this.btnList[index].cb();
       }
+    },
+    itemClick(item) {
+      this.$emit("itemClick", item);
     }
   },
   components: {
@@ -108,6 +111,10 @@ export default {
           line-height: 0.3rem;
           color: rgba(155, 155, 155, 1);
           font-size: 0.22rem;
+          width: 100%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
       }
     }

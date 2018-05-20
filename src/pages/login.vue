@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="contentWrapper">
-      <Dialog :title="title" :error="error" :btnText="btnText" :btnActive="btnActive" @btnClick="btnClick" @close="close">
+      <Dialog :title="title" :error="error" :btnText="btnText" :btnActive="checked&&btnActive" @btnClick="btnClick" @close="close">
         <div class="content" v-show="step===1">
           <span>+86</span>
           <img src="@/assets/image/phone-arrrow@2x.png">
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="agreenment" v-show="step===2">
-          <img class="icon-check" src="@/assets/image/code-agree-icon@2x.png" alt="">
+          <img class="icon-check" :src="checked?iconChecked:iconCheck" alt="" @click="checked = !checked">
           您已阅读并同意
           <router-link to="/agreement" tag="span">《用户注册协议》</router-link>
         </div>
@@ -42,6 +42,9 @@ export default {
     return {
       step: 1,
       title: "输入手机号",
+      checked: true,
+      iconChecked: require("@/assets/image/selected@2x.png"),
+      iconCheck: require("@/assets/image/Unselected@2x.png"),
       error: "",
       btnText: "下一步",
       placeHolder: "请输入手机号码",
@@ -148,6 +151,7 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 10;
+  filter: 2px;
 
   .contentWrapper {
     width: 5.4rem;

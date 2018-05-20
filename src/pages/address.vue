@@ -36,7 +36,7 @@ export default {
   name: "commonPlace",
   data() {
     return {
-      address: [],
+      address: [{}, {}],
       addressType: 0,
       showModal: false,
       showReset: false,
@@ -45,7 +45,10 @@ export default {
           color: "#2F3338",
           text: "重新设置地址",
           cb: () => {
-            this.$router.push("/resetplace");
+            this.$router.push({
+              path: "/resetplace",
+              query: this.address[this.addressType]
+            });
             this.showModal = false;
           }
         },
@@ -76,6 +79,23 @@ export default {
     };
   },
   methods: {
+    // 获取个人信息
+    queryUserAddress(userId) {
+      if (!userId) {
+        return;
+      }
+      getData({
+        url: "/api/v1/appuser/queryUserAddress",
+        data: { userId },
+        success: res => {
+          this.address = res.obj.sort(function(a, b) {
+            var value1 = a["type"];
+            var value2 = b["type"];
+            return value1 - value2;
+          });
+        }
+      });
+    },
     btnClick(index) {
       if (
         this.btnList[index].cb &&
@@ -89,8 +109,7 @@ export default {
     Modal
   },
   created() {
-    console.log(this.$route.query);
-    this.address = this.$route.query;
+    this.queryUserAddress(localStorage.id);
   }
 };
 </script>
@@ -142,6 +161,10 @@ export default {
       line-height: 0.3rem;
       color: rgba(155, 155, 155, 1);
       font-size: 0.22rem;
+      width: 5rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     .control {

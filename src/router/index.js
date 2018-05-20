@@ -32,9 +32,9 @@ export default new Router({
       component: resolve => require(['@/pages/Route'], resolve)
     },
     {
-      path: '/route/routeDetail',
+      path: '/route/routedetail',
       name: 'RouteDetail',
-      component: resolve => require(['@/pages/RouteDetail'], resolve)
+      component: resolve => require(['@/pages/Routedetail'], resolve)
     },
     {
       path: '/my',
@@ -50,6 +50,11 @@ export default new Router({
       path: '/my/newsDetail',
       name: 'NewsDetail',
       component: resolve => require(['@/pages/NewsDetail'], resolve)
+    },
+    {
+      path: '/mapDetail',
+      name: 'mapDetail',
+      component: resolve => require(['@/pages/mapDetail'], resolve)
     }
   ]
 })

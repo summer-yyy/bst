@@ -1,14 +1,14 @@
 <template>
   <div class="route">
-    <div class="line" v-for="value in lines" @click="goRouteDetail">
+    <div class="line" v-for="(value,index) in lines" @click="value.index = index; goRouteDetail(value)">
       <div class="line-title">
-        <i class="line-number"><span>{{value.number}}</span></i>
-        <span class="line-name">虹1线</span>
+        <i class="line-number"><span>{{index+1}}</span></i>
+        <span class="line-name">{{value.lineName}}</span>
       </div>
       <div class="line-content">
-        <span class="startPoint">{{value.start}}</span>
+        <span class="startPoint">{{value.startStation}}</span>
         <i class="line-content-icon"></i>
-        <span class="startPoint endPoint">{{value.end}}</span>
+        <span class="startPoint endPoint">{{value.endStation}}</span>
       </div>
       <i class="go-icon">
       </i>
@@ -18,68 +18,31 @@
 </template>
 
 <script>
+import { getData } from "@/assets/js/common.js";
 export default {
-  name: "Index",
+  name: "Route",
   data() {
     return {
-      lines: {
-        0: {
-          number: 0,
-          name: "虹1线",
-          start: "虹桥机场航站楼",
-          end: "人民广场"
-        },
-        1: {
-          number: 1,
-          name: "虹2线",
-          start: "虹桥T2航站楼",
-          end: "五角楼"
-        },
-        2: {
-          number: 1,
-          name: "虹2线",
-          start: "虹桥T2航站楼",
-          end: "五角楼"
-        },
-        3: {
-          number: 1,
-          name: "虹2线",
-          start: "虹桥T2航站楼",
-          end: "五角楼"
-        },
-        4: {
-          number: 1,
-          name: "虹2线",
-          start: "虹桥T2航站楼",
-          end: "五角楼"
-        },
-        5: {
-          number: 1,
-          name: "虹2线",
-          start: "虹桥T2航站楼",
-          end: "五角楼"
-        },
-        6: {
-          number: 1,
-          name: "虹2线",
-          start: "虹桥T2航站楼",
-          end: "五角楼"
-        },
-        7: {
-          number: 1,
-          name: "虹2线",
-          start: "虹桥T2航站楼",
-          end: "五角楼"
-        }
-      }
+      lines: []
     };
   },
   methods: {
-    goRouteDetail() {
-      this.$router.push("/route/routeDetail");
+    goRouteDetail(obj) {
+      this.$router.push({ path: "/route/routeDetail", query: obj });
+    },
+    getRoutes() {
+      getData({
+        url: "/api/v1/busline/queryBusLine",
+        data: {},
+        success: res => {
+          this.lines = res.obj;
+        }
+      });
     }
   },
-  mounted() {}
+  mounted() {
+    this.getRoutes();
+  }
 };
 </script>
 

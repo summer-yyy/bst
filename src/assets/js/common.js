@@ -31,3 +31,18 @@ export function getData(opt) {
     console.log('err:' + err, opt)
   })
 }
+// 保存localStorage
+export function setStorage(key, value) {
+  console.log(localStorage[key])
+  // 储存进历史记录
+  localStorage[key] = JSON.stringify(value);
+}
+// 取出localStorage
+export function getStorage(key) {
+  // 储存进历史记录
+  if (localStorage[key]) {
+    return JSON.parse(localStorage[key]);
+  } else {
+    return [];
+  }
+}

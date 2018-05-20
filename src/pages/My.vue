@@ -14,7 +14,7 @@
       </i>
       <span class="my-news" >我的消息</span>
     </div>
-    <div class="tab-box">
+    <div class="tab-box" @click="$router.push('/address')">
       <i class="tab-icon usual-icon">
         <img src="../../static/image/myImg/my-add@2x.png"/>
       </i>
