@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div class="index" @click="isLogin">
     <div class="headerImg">
       <img src="../../static/image/indexImg/bus-photo@2x.png" />
     </div>
@@ -24,14 +24,14 @@
     </div>
     <div class="result">
       <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)">
-        <img class="item-icon" src="@/assets/image/add-company-icon@2x.png" />
+        <img class="item-icon" src="@/assets/image/site@2x.png" />
         <div class="content">
           <p class="title">{{item.name}}</p>
           <p class="text">{{typeof item.address === 'string' ? item.address : item.district}}</p>
         </div>
       </div>
     </div>
-    <div class="card-show usual-address" v-if="id">
+    <div class="card-show usual-address">
       <itemWrapper :title="title1" :icon="icon1" @iconClick="goAddress()">
         <div class="itemWrapper">
       <div class="item">
@@ -40,7 +40,7 @@
           <p class="title">家</p>
         </div>
         <div class="control">
-          <router-link :to="{path: '/resetplace',query:usualAddresses[0]}" tag="span">{{usualAddresses[0].addressName || "设置家的位置"}}</router-link>
+          <span @click="addressClick(usualAddresses[0])">{{usualAddresses[0].addressName || "设置家的位置"}}</span>
         </div>
       </div>
       <div class="item">
@@ -49,7 +49,7 @@
           <p class="title">公司</p>
         </div>
         <div class="control">
-          <router-link :to="{path: '/resetplace',query:usualAddresses[1]}" tag="span">{{usualAddresses[1].addressName || "设置公司的位置"}}</router-link>
+          <span @click="addressClick(usualAddresses[1])">{{usualAddresses[1].addressName || "设置公司的位置"}}</span>
         </div>
       </div>
     </div>
@@ -88,6 +88,7 @@ export default {
       title1: "常用地点",
       icon1: require("@/assets/image/add-more-normal@2x.png"),
       msgStr: "../assets/image/indexImg",
+      location: {},
       endPosition: {
         address: ""
       }, //目的地位置input
@@ -109,6 +110,13 @@ export default {
     };
   },
   methods: {
+    // 判断是否登陆
+    isLogin() {
+      if (!this.id) {
+        this.$router.push("/login");
+        return;
+      }
+    },
     goAddress() {
       this.$router.push({
         path: "/address"
@@ -132,6 +140,16 @@ export default {
         }
       });
     },
+    addressClick(address) {
+      if (address.addressName) {
+        this.endPosition.address = address.addressName;
+        this.endPosition.lng = address.longitude;
+        this.endPosition.lat = address.latitude;
+        this.search();
+      } else {
+        this.$router.push({ path: "/resetplace", query: address });
+      }
+    },
     //设置查询地点
     setPosition(item) {
       this[this.target + "Position"].address = item.name;
@@ -141,29 +159,42 @@ export default {
     },
     // 查路线
     search(e, pos) {
-      // if (!this.id) {
-      // this.$router.push("/login");
-      // return;
-      // } else {
-      // if (!this.endPosition.address) {
-      //   alert(`请输入目的地`);
-      //   return;
-      // } else {
-      //   if (this.result.length > 0) {
-      //     this.setPosition(this.result.length[0]);
-      //   } else {
-      //     alert(
-      //       `很抱歉，在地图中未搜索到此目的地，请您与客服联系，我们将进行补全，感谢您理解。`
-      //     );
-      //   }
-      // }
-      // }
       let position = {};
       if (pos) {
         position = pos;
       } else {
+        if (!this.id) {
+          this.$router.push("/login");
+          return;
+        } else {
+          if (!this.endPosition.address) {
+            alert(`请输入目的地`);
+            return;
+          } else {
+            if (!this.startPosition.address) {
+              if (!this.location.address) {
+                alert(`定位中，请稍后再试！`);
+                return;
+              }
+            } else if (!this.startPosition.lng) {
+              alert(
+                `很抱歉，在地图中未搜索到此起始点，请您与客服联系，我们将进行补全，感谢您理解。
+            `
+              );
+              return;
+            } else if (!this.endPosition.lng) {
+              alert(
+                `很抱歉，在地图中未搜索到此目的地，请您与客服联系，我们将进行补全，感谢您理解。`
+              );
+              return;
+            }
+          }
+        }
         position = {
-          start: this.startPosition,
+          start:
+            this.startPosition.address === ""
+              ? this.location
+              : this.startPosition,
           end: this.endPosition
         };
       }
@@ -189,9 +220,9 @@ export default {
           this.$router.push({
             path: "/mapDetail",
             query: {
-              busLineTarget: res.busLineTarget,
-              startPoin: position.start,
-              endPoin: position.end
+              busLineTarget: JSON.stringify(res.busLineTarget),
+              start: JSON.stringify(position.start),
+              end: JSON.stringify(position.end)
             }
           });
         }
@@ -209,7 +240,11 @@ export default {
               return item.location.lat && item.location.lng;
             })
             .slice(0, 5);
+          this[this.target + "Position"].lng = this.result[0].location.lng;
+          this[this.target + "Position"].lat = this.result[0].location.lat;
         } else {
+          this[this.target + "Position"].lng = "";
+          this[this.target + "Position"].lat = "";
           this.result = [];
         }
       });
@@ -220,7 +255,7 @@ export default {
       geolocation.getCurrentPosition((status, result) => {
         if (result && result.position) {
           console.log(result);
-          this.startPosition = {
+          this.location = {
             lng: result.position.lng,
             lat: result.position.lat,
             address: result.formattedAddress
@@ -262,6 +297,8 @@ export default {
 
 .headerImg {
   width: 100%;
+  height: 2.28rem;
+  overflow: hidden;
 }
 
 .headerImg img {
@@ -279,9 +316,10 @@ export default {
   padding: 0 0.3rem;
 
   input {
-    width: 100%;
+    flex: 1;
     border: none;
     margin-left: 0.18rem;
+    font-size: 0.28rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -308,7 +346,7 @@ export default {
 
 .start-position {
   height: 1rem;
-  border-bottom: 1px solid rgba(231, 231, 231, 1);
+  border-bottom: 0.5px solid rgba(231, 231, 231, 1);
   display: flex;
   align-items: center;
 }
@@ -387,7 +425,7 @@ export default {
 .card-show {
   width: 100%;
   background: #fff;
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
   border-radius: 0.04rem;
 }
 
@@ -398,7 +436,7 @@ export default {
   text-align: left;
   position: relative;
   height: 4.3rem;
-  border-bottom: 1px solid #E7E7E7;
+  border-bottom: 0.5px solid #E7E7E7;
 }
 
 .card-title span {
@@ -507,7 +545,6 @@ ul li {
   display: flex;
   align-items: center;
   overflow: hidden;
-  border-bottom: 1px solid rgba(237, 237, 237, 1);
   height: 0.95rem;
 
   .item-icon {

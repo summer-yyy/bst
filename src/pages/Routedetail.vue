@@ -19,7 +19,7 @@
       <div class="route-detail-box" v-for="value in linesPoint" :key="value.id" @click="showPointDetail()">
         <div class="route-point">
           <img src="">
-          <div class="route-point-text">{{value.pointName}}</div>
+          <div class="route-point-text">{{value.targetName}}</div>
           <div class="datadetail">
             <span>沪34559 </span> <span> 还有1站</span>, <span>约10分钟</span>
           </div>
@@ -76,7 +76,7 @@ export default {
         url: "/api/v1/busline/queryBusLineTarget/" + lineId,
         data: { lineId },
         success: res => {
-          this.lines = res.obj;
+          this.linesPoint = res.obj;
         }
       });
     }
@@ -91,11 +91,17 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .route {
-  height: 100%;
   overflow: auto;
   font-family: PingFangSC-Semibold;
   padding: 0.2rem;
   box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: #f2f2f2;
 }
 .line {
   width: 100%;
@@ -116,7 +122,7 @@ export default {
   margin-left: 0.21rem;
   padding-top: 0.4rem;
   margin-right: 0.32rem;
-  border-bottom: 1px solid #979797;
+  border-bottom: 0.5px solid #979797;
 }
 .line-number {
   display: block;

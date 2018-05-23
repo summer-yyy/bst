@@ -52,7 +52,7 @@ export default {
     .button {
       height: 1rem;
       line-height: 1rem;
-      border-bottom: 1px solid rgba(241, 241, 241, 1);
+      border-bottom: 0.5px solid rgba(241, 241, 241, 1);
     }
   }
 }

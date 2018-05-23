@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    <div class="mask"></div>
     <div class="contentWrapper">
       <Dialog :title="title" :error="error" :btnText="btnText" :btnActive="checked&&btnActive" @btnClick="btnClick" @close="close">
         <div class="content" v-show="step===1">
@@ -29,6 +30,7 @@
         </div>
       </Dialog>
     </div>
+    <div class="bottom"></div>
   </div>
 </template>
 
@@ -144,18 +146,41 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
 .wrapper {
-  background-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 10;
-  filter: 2px;
+
+  .mask {
+    background: url('../../static/image/indexImg/bus-photo@2x.png') top no-repeat;
+    position: absolute;
+    filter: blur(22px);
+    background-color: rgba(0, 0, 0, 0.2);
+    height: 100%;
+    width: 100%;
+    filter: blur(22px);
+    z-index: 2;
+  }
+
+  .bottom {
+    width: 100%;
+    height: 1rem;
+    position: absolute;
+    background-color: #F2F2F2;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+  }
 
   .contentWrapper {
+    position: absolute;
+    top: 2.17rem;
+    left: 50%;
+    margin-left: -2.7rem;
     width: 5.4rem;
-    margin: 2.17rem auto;
+    z-index: 3;
 
     .content {
       display: flex;
@@ -182,7 +207,7 @@ export default {
         height: 0.58rem;
         line-height: 0.58rem;
         border-radius: 0.04rem;
-        border: 1px solid rgba(204, 204, 204, 1);
+        border: 0.5px solid rgba(204, 204, 204, 1);
         margin-top: 0.35rem;
 
         &.active {
@@ -209,7 +234,7 @@ export default {
           width: 0.9rem;
           height: 0.9rem;
           border-radius: 0.02rem;
-          border: 1px solid rgba(204, 204, 204, 1);
+          border: 0.5px solid rgba(204, 204, 204, 1);
           margin-right: 0.24rem;
           line-height: 0.9rem;
           color: rgba(51, 51, 51, 1);
@@ -221,7 +246,7 @@ export default {
           }
 
           &.active {
-            border: 1px solid rgba(255, 183, 64, 1);
+            border: 0.5px solid rgba(255, 183, 64, 1);
           }
         }
       }

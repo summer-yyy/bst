@@ -1,6 +1,6 @@
 <template>
   <div class="history">
-    <itemWrapper :title="title" :icon="icon" @iconClick="showModal = true">
+    <itemWrapper :title="title" :icon="icon" @iconClick="showModal = true" :headerStyle="headerStyle">
       <slot>
         <div class="list">
           <div class="item" v-for="(item, index) in list" :key="index" @click="itemClick(item)">
@@ -69,6 +69,10 @@ export default {
     list: {
       type: Array,
       defalut: []
+    },
+    headerStyle: {
+      type: Object,
+      defalut: {}
     }
   }
 };

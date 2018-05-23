@@ -2,9 +2,9 @@
   <div class="wrapper">
     <div class="detail">
       <div class="title">
-        当前位置
+        {{start.address}}
         <img class="icon" src="@/assets/image/query-arrow@2x.png" alt="">
-        目的地
+        {{end.address}}
       </div>
       <div class="line">
         步行300米 ·
@@ -26,34 +26,35 @@
           <img class="end-icon" src="@/assets/image/end-icon@2x.png">
         </div>
         <div class="start">
-          <p class="pos">当前位置</p>
+          <p class="pos">{{start.address}}</p>
           <p class="des">步行 300米   约6分钟</p>
         </div>
         <div class="bus">
-          <p class="pos">莘庄</p>
+          <p class="pos">{{busLine[0] && busLine[0].targetName}}</p>
           <div class="busLine">
             <div>
               <p class="pos">虹1线<span class="plateNum">京A888888</span></p>
               <p class="des">开往虹桥国际机场</p>
             </div>
-            <span class="count">5站</span>
+            <span class="count">{{busLine.length}}站</span>
           </div>          
-          <p class="pos">莘庄</p>
+          <p class="pos">{{busLine[busLine.length-1] &&busLine[busLine.length-1].targetName}}</p>
         </div>
         <div class="end">
           <p class="des">距离终点 3020米</p>          
-          <p class="pos">福泉路255弄</p>
+          <p class="pos">{{end.address}}</p>
         </div>
       </div>
       <div class="trigger" @click="routeShow = !routeShow">
         <div class="btn"></div>
       </div>
     </div>
+    <img src="@/assets/image/traffic-color@2x.png" class="traffic" />
     <div class="map">
       <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :events="events" class="amap-demo" :mapStyle="'fresh'">        
         <el-amap-polyline :path="polyline.path" :strokeColor="polyline.strokeColor" :strokeWeight="polyline.strokeWeight" :strokeOpacity="polyline.strokeOpacity" :zIndex="10"></el-amap-polyline>
-        <el-amap-circle-marker v-for="(circle,index) in busLine" :center="[circle.longitude, circle.latitude]" :radius="(index === 0 || index === busLine.length -1) ? 7 : 5" :strokeColor="(index === 0 || index === busLine.length -1) ? '#FFFFFF' : '#FFB341'" :strokeWeight="2" :strokeOpacity="'1'" :fillColor="(index === 0 || index === busLine.length -1) ? '#FFB341': '#fff'" :zIndex="11" :key="index"></el-amap-circle-marker>
-        <el-amap-text v-for="text in busLine" :text="text.targetName" :offset="[10,0]" :position="[text.longitude, text.latitude]" :textAlign="'left'"></el-amap-text>
+        <el-amap-circle-marker v-for="(circle,index) in busLine" :center="[circle.longitude, circle.latitude]" :radius="(index === 0 || index === busLine.length -1) ? 14 : 10" :strokeColor="(index === 0 || index === busLine.length -1) ? '#FFFFFF' : '#FFB341'" :strokeWeight="(index === 0 || index === busLine.length -1) ? 3: 6" :strokeOpacity="'1'" :fillColor="(index === 0 || index === busLine.length -1) ? '#FFB341': '#fff'" :zIndex="11" :key="index"></el-amap-circle-marker>
+        <el-amap-text v-for="text in busLine" :text="text.targetName" :offset="[15,0]" :position="[text.longitude, text.latitude]" :textAlign="'left'"></el-amap-text>
       </el-amap>
     </div>
   </div>
@@ -64,10 +65,12 @@
   font-size: 0.3rem;
   color: #333;
   background: inherit;
+  font-weight: 900;
 }
 .amap-marker:first-of-type .amap-overlay-text-container,
 .amap-marker:last-of-type .amap-overlay-text-container {
   font-size: 0.36rem;
+  text-shadow: 2px 2px 2px #fff;
 }
 </style>
 >
@@ -79,9 +82,6 @@ export default {
   name: "mapDetail",
   data() {
     return {
-      start: {},
-      end: {},
-      busLine: [],
       search: "",
       routeShow: false,
       amapManager,
@@ -150,42 +150,25 @@ export default {
       // line.setMap();
     }
   },
+  computed: {
+    busLine() {
+      return JSON.parse(this.$route.query.busLineTarget);
+    },
+    start() {
+      return JSON.parse(this.$route.query.start);
+    },
+    end() {
+      return JSON.parse(this.$route.query.end);
+    }
+  },
   components: {},
+  beforeCreate() {
+    console.log(this.$route.query);
+    // this.busLine = JSON.parse(this.$route.query.busLineTarget);
+    // this.start = JSON.parse(this.$route.query.start);
+    // this.end = JSON.parse(this.$route.query.end);
+  },
   created() {
-    this.busLine = [
-      {
-        id: "1",
-        lineId: "a5460f258dba43c392e893754ff43296",
-        targetName: "天通苑",
-        longitude: 116.423309,
-        latitude: 40.07148,
-        orderNumber: 0
-      },
-      {
-        id: "2",
-        lineId: "a5460f258dba43c392e893754ff43296",
-        targetName: "立水桥",
-        longitude: 116.41235,
-        latitude: 40.053032,
-        orderNumber: 1
-      },
-      {
-        id: "2790a25850a14c1f9e299ae1be167f81",
-        lineId: "a5460f258dba43c392e893754ff43296",
-        targetName: "大屯路",
-        longitude: 116.395132,
-        latitude: 40.00243,
-        orderNumber: 2
-      },
-      {
-        id: "94cff99f28f24e96a405f46c05bb2919",
-        lineId: "a5460f258dba43c392e893754ff43296",
-        targetName: "惠新西街南口",
-        longitude: 116.417537,
-        latitude: 39.977121,
-        orderNumber: 3
-      }
-    ];
     setTimeout(() => {
       let map = amapManager.getMap();
       console.log(map);
@@ -207,6 +190,14 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 10;
+
+  .traffic {
+    position: absolute;
+    left: 0.1rem;
+    bottom: 1rem;
+    z-index: 13;
+    width: 0.96rem;
+  }
 
   .detail {
     top: 0.2rem;
@@ -249,21 +240,23 @@ export default {
         .icon {
           width: 0.22rem;
           vertical-align: middle;
-          margin-top: -0.1rem;
+          margin-top: -0.07rem;
         }
 
         height: 0.37rem;
         line-height: 0.37rem;
         color: rgba(102, 102, 102, 1);
         font-size: 0.26rem;
+        font-weight: 900;
 
         .min {
           color: #FFB341;
-          margin-left: 0.1rem;
+          margin-left: 0.05rem;
         }
       }
 
       .btn {
+        font-weight: 900;
         width: 1.5rem;
         height: 0.44rem;
         border-radius: 0.04rem;
@@ -276,9 +269,9 @@ export default {
     }
 
     .route {
-      border-top: 1px solid rgba(213, 213, 213, 1);
+      border-top: 0.5px solid rgba(213, 213, 213, 1);
       margin-top: 0.4rem;
-      padding-left: 0.2rem;
+      padding-left: 0.48rem;
       position: relative;
 
       .icon-line {
@@ -287,7 +280,7 @@ export default {
         flex-direction: column;
         align-items: center;
         top: 0.3rem;
-        left: -0.2rem;
+        left: -0.1rem;
 
         .circle {
           border-radius: 50%;
@@ -338,30 +331,28 @@ export default {
       }
 
       .start {
-        border-bottom: 1px solid rgba(231, 231, 231, 1);
+        border-bottom: 0.5px solid rgba(231, 231, 231, 1);
         padding-top: 0.1rem;
-        padding-bottom: 0.15rem;
+        height: 1.31rem;
       }
 
       .bus {
-        border-bottom: 1px solid rgba(231, 231, 231, 1);
-        padding: 0.15rem 0;
+        border-bottom: 0.5px solid rgba(231, 231, 231, 1);
+        padding: 0.14rem 0;
 
         .busLine {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          height: 2.2rem;
+          height: 2.18rem;
 
           .plateNum {
             margin-left: 0.15rem;
-            padding: 0 0.1rem;
-            height: 0.44rem;
-            line-height: 0.44rem;
+            padding: 0.09rem 0.1rem;
             font-size: 0.26rem;
             font-weight: 100;
             border-radius: 0.04rem;
-            border: 1px solid rgba(198, 198, 198, 1);
+            border: 0.5px solid rgba(198, 198, 198, 1);
           }
 
           .count {
@@ -385,7 +376,7 @@ export default {
       margin-left: -0.45rem;
       width: 0.9rem;
       height: 0.24rem;
-      border-radius: 0.05rem;
+      border-radius: 0 0 0.05rem 0.05rem;
       background-color: rgba(255, 255, 255, 0.95);
       position: absolute;
 

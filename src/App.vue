@@ -66,7 +66,7 @@ html, body {
 .tabWrapper {
   width: 100%;
   height: 1rem;
-  position: fixed;
+  position: absolute;
   z-index: 1;
   left: 0;
   bottom: 0;
@@ -77,7 +77,7 @@ html, body {
 
   .icon {
     width: 0.37rem;
-    height: 0.37rem;
+    height: 0.44rem;
   }
 }
 
@@ -86,5 +86,11 @@ html, body {
   flex: 1;
   font-size: 0.22rem;
   color: #2f3338;
+
+  .bottom-btntext {
+    height: 0.3rem;
+    line-height: 0.3rem;
+    margin-top: 0.05rem;
+  }
 }
 </style>

@@ -135,7 +135,7 @@ export default {
     display: flex;
     align-items: center;
     overflow: hidden;
-    border-bottom: 1px solid rgba(237, 237, 237, 1);
+    border-bottom: 0.5px solid rgba(237, 237, 237, 1);
     height: 1.45rem;
 
     .item-icon {
@@ -145,7 +145,7 @@ export default {
 
     .content {
       float: left;
-      margin-left: 0.13rem;
+      margin-left: 0.28rem;
       flex: 1;
     }
 
@@ -172,6 +172,11 @@ export default {
       height: 1.45rem;
       line-height: 1.45rem;
       font-size: 0.26rem;
+
+      .icon {
+        width: 0.41rem;
+        height: 0.1rem;
+      }
 
       span {
         font-size: 0.26rem;

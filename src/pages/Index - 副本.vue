@@ -310,7 +310,7 @@ export default {
 
 .start-position {
   height: 1rem;
-  border-bottom: 1px solid rgba(231, 231, 231, 1);
+  border-bottom: 0.5px solid rgba(231, 231, 231, 1);
   display: flex;
   align-items: center;
 }
@@ -348,7 +348,7 @@ export default {
   text-align: left;
   position: relative;
   height: 4.3rem;
-  border-bottom: 1px solid #E7E7E7;
+  border-bottom: 0.5px solid #E7E7E7;
 }
 
 .card-title span {
@@ -477,7 +477,7 @@ ul li {
   display: flex;
   align-items: center;
   overflow: hidden;
-  border-bottom: 1px solid rgba(237, 237, 237, 1);
+  border-bottom: 0.5px solid rgba(237, 237, 237, 1);
   height: 0.95rem;
 
   .item-icon {

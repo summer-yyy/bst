@@ -17,7 +17,7 @@
     </div>
     <div class="result">
       <div class="item" v-for="(item, index) in result" :key="index" @click="setInput(item)">
-        <img class="item-icon" src="@/assets/image/add-company-icon@2x.png" />
+        <img class="item-icon" src="@/assets/image/site@2x.png" />
         <div class="content">
           <p class="title">{{item.name}}</p>
           <p class="text">{{typeof item.address === 'string' ? item.address : item.district}}</p>
@@ -367,7 +367,7 @@ export default {
       height: 1rem;
       margin: 0 0.2rem;
       overflow: hidden;
-      border-bottom: 1px solid #E7E7E7;
+      border-bottom: 0.5px solid #E7E7E7;
     }
 
     .btnGrounp {
@@ -383,7 +383,7 @@ export default {
 
         &.location {
           color: #70C1FF;
-          border-right: 1px #E7E7E7 solid;
+          border-right: 0.5px #E7E7E7 solid;
         }
       }
     }
