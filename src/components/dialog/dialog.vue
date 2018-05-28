@@ -58,24 +58,29 @@ export default {
     height 0.25rem
     width 0.25rem
     position absolute
-    top 0.24rem
+    top 0.18rem
     right 0.24rem
   .title
-    height: 45px;
-    line-height: 45px;
+    height: 0.45rem;
+    line-height: 0.45rem;
     color: rgba(51, 51, 51, 1);
     font-size: 0.32rem;
+    color: #333333;
+    font-family :PingFangSC-Regular;
   .error
     height: .30rem;
     line-height: .30rem;
     color: rgba(255, 126, 52, 1);
     font-size: .22rem;
+    margin-top: 0.06rem;
   .btn
     height: .8937rem;
     background-color: rgba(216, 216, 216, 1);
     font-size 0.32rem
     line-height .8937rem;
-    color #fff
+    color #fff;
+    font-weight:600;
+    border-radius: 0 0 0.04rem 0.04rem;
     &.active
       background-color: rgba(255, 183, 64, 1);
 </style>

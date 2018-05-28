@@ -14,7 +14,8 @@
       </i>
       <span class="my-news" >我的消息</span>
     </div>
-    <div class="tab-box" @click="$router.push('/address')">
+
+    <div class="tab-box tab-box-second" @click="$router.push('/address')">
       <i class="tab-icon usual-icon">
         <img src="../../static/image/myImg/my-add@2x.png"/>
       </i>
@@ -104,10 +105,10 @@ export default {
 }
 .header-icon {
   position: absolute;
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.4rem;
+  height: 1.4rem;
   bottom: 0;
-  left: 1.3rem;
+  left: 1.1rem;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
@@ -116,8 +117,9 @@ export default {
   width: 100%;
 }
 .phone-number {
-  margin-top: 0.04rem;
+  margin-top: 0.24rem;
   font-size: 0.32rem;
+  line-height: 0.45rem;
   color: #2f3338;
   text-align: left;
   margin-left: 0.9rem;
@@ -137,16 +139,16 @@ export default {
   position: relative;
 }
 .usual-icon {
-  background: url("../../static/image/myImg/my-add@2x.png") no-repeat center;
   background-size: 100%;
-  width: 0.3rem;
+  width: 0.32rem;
   height: 0.35rem;
+  padding-top: 0.1rem;
 }
 .tab-icon img {
   width: 100%;
 }
 .my-news {
-  font-size: 0.28rem;
+  font-size: 0.3rem;
   color: #333;
   margin-left: 0.36rem;
 }
@@ -159,7 +161,10 @@ export default {
   -moz-border-radius: 50%;
   border-radius: 50%;
   background: #f43531;
-  right: -0.1rem;
+  right: -0.15rem;
   top: 0.5rem;
 }
+  .tab-box-second{
+    padding-top: 0;
+  }
 </style>

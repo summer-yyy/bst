@@ -65,7 +65,7 @@
             <span class="card-content-name history-search-name">{{item.end.address}}</span>
           </li>
         </ul>
-     </History>      
+     </History>
     </div>
 
 
@@ -136,7 +136,6 @@ export default {
             var value2 = b["type"];
             return value1 - value2;
           });
-          console.log(this.usualAddresses);
         }
       });
     },
@@ -234,7 +233,6 @@ export default {
       let autocomplete = new AMap.Autocomplete();
       autocomplete.search(val, (status, result) => {
         if (result && result.tips) {
-          console.log(result);
           this.result = result.tips
             .filter(item => {
               return item.location.lat && item.location.lng;
@@ -254,7 +252,6 @@ export default {
       let geolocation = new AMap.Geolocation({ enableHighAccuracy: true });
       geolocation.getCurrentPosition((status, result) => {
         if (result && result.position) {
-          console.log(result);
           this.location = {
             lng: result.position.lng,
             lat: result.position.lat,
@@ -373,6 +370,7 @@ export default {
     border-bottom: none;
     height: 1.2rem;
     padding: 0 0.3rem;
+    border-bottom: 0.01rem solid #f1f1f1;
 
     &:hover {
       background-color: rgba(242, 242, 242, 0.5);

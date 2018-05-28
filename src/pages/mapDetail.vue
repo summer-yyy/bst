@@ -9,7 +9,7 @@
       <div class="line">
         步行300米 ·
       </div>
-      <div class="bottom">        
+      <div class="bottom">
         <p class="time">
         <img class="icon" src="@/assets/image/query-clock@2x.png" alt="">
           距离发车时间仅 <span class="min">15分钟</span></p>
@@ -37,11 +37,11 @@
               <p class="des">开往虹桥国际机场</p>
             </div>
             <span class="count">{{busLine.length}}站</span>
-          </div>          
+          </div>
           <p class="pos">{{busLine[busLine.length-1] &&busLine[busLine.length-1].targetName}}</p>
         </div>
         <div class="end">
-          <p class="des">距离终点 3020米</p>          
+          <p class="des">距离终点 3020米</p>
           <p class="pos">{{end.address}}</p>
         </div>
       </div>
@@ -51,7 +51,7 @@
     </div>
     <img src="@/assets/image/traffic-color@2x.png" class="traffic" />
     <div class="map">
-      <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :events="events" class="amap-demo" :mapStyle="'fresh'">        
+      <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :events="events" class="amap-demo" :mapStyle="'fresh'">
         <el-amap-polyline :path="polyline.path" :strokeColor="polyline.strokeColor" :strokeWeight="polyline.strokeWeight" :strokeOpacity="polyline.strokeOpacity" :zIndex="10"></el-amap-polyline>
         <el-amap-circle-marker v-for="(circle,index) in busLine" :center="[circle.longitude, circle.latitude]" :radius="(index === 0 || index === busLine.length -1) ? 14 : 10" :strokeColor="(index === 0 || index === busLine.length -1) ? '#FFFFFF' : '#FFB341'" :strokeWeight="(index === 0 || index === busLine.length -1) ? 3: 6" :strokeOpacity="'1'" :fillColor="(index === 0 || index === busLine.length -1) ? '#FFB341': '#fff'" :zIndex="11" :key="index"></el-amap-circle-marker>
         <el-amap-text v-for="text in busLine" :text="text.targetName" :offset="[15,0]" :position="[text.longitude, text.latitude]" :textAlign="'left'"></el-amap-text>
@@ -102,7 +102,6 @@ export default {
           let geolocation = new AMap.Geolocation({ enableHighAccuracy: true });
           geolocation.getCurrentPosition((status, result) => {
             if (result && result.position) {
-              console.log(result);
               this.longitude = result.position.lng;
               this.latitude = result.position.lat;
               this.center = [this.longitude, this.latitude];
@@ -163,7 +162,6 @@ export default {
   },
   components: {},
   beforeCreate() {
-    console.log(this.$route.query);
     // this.busLine = JSON.parse(this.$route.query.busLineTarget);
     // this.start = JSON.parse(this.$route.query.start);
     // this.end = JSON.parse(this.$route.query.end);
@@ -171,7 +169,6 @@ export default {
   created() {
     setTimeout(() => {
       let map = amapManager.getMap();
-      console.log(map);
       // this.setCirle(this.busLine);
       this.setLine(this.busLine);
       map.setFitView();

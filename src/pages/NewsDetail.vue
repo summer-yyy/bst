@@ -2,7 +2,7 @@
   <div class="news-detail-list">
     <div class="detail-list-box" v-for="value in lines" >
       <div class="detail-list-date">
-        <span class="detail-month">{{value.month}}</span>
+        <span class="detail-month">{{value.month}}</span><span class="jiange"></span>
         <span class="detail-time">{{value.time}}</span>
       </div>
       <div class="list-detail-box-content">
@@ -28,66 +28,17 @@ export default {
         0: {
           title: "八事通通知",
           news:
-            "尊敬的用户，为了保障您的合法权益，为彻底贯彻实施相\n" +
-            "关法规，现正式地向您公示以下内容：\n" +
-            "1.您注册八事通免费机场大巴即同意注册用户协议；\n" +
-            "2.如遇特殊情况，我司员工有权要求您出示身份信息；\n" +
-            "3.大巴免费乘坐，请您实时关注路况，如耽误您的登机时\n" +
-            "间，我司盖不负责。",
-          month: "04/20",
-          time: "06:23"
-        },
-        1: {
-          imgUrl: "../static/image/myNewsImg/message-activity@2x.png",
-          title: "活动通知",
-          news: "尊敬的用户，非常抱歉的通知您，由于天气…",
-          month: "04/20",
-          time: "06:23"
-        },
-        2: {
-          imgUrl: "../static/image/myNewsImg/message-activity@2x.png",
-          title: "八事通通知",
-          news: "尊敬的用户，非常抱歉的通知您，由于天气…",
-          month: "04/20",
-          time: "06:23"
-        },
-        3: {
-          imgUrl: "../static/image/myNewsImg/message-activity@2x.png",
-          title: "八事通通知",
-          news: "尊敬的用户，非常抱歉的通知您，由于天气…",
-          month: "04/20",
-          time: "06:23"
-        },
-        4: {
-          imgUrl: "../static/image/myNewsImg/message-activity@2x.png",
-          title: "八事通通知",
-          news: "尊敬的用户，非常抱歉的通知您，由于天气…",
-          month: "04/20",
-          time: "06:23"
-        },
-        5: {
-          imgUrl: "../static/image/myNewsImg/message-activity@2x.png",
-          title: "八事通通知",
-          news: "尊敬的用户，非常抱歉的通知您，由于天气…",
-          month: "04/20",
-          time: "06:23"
-        },
-        6: {
-          imgUrl: "../static/image/myNewsImg/message-activity@2x.png",
-          title: "八事通通知",
-          news: "尊敬的用户，非常抱歉的通知您，由于天气…",
-          month: "04/20",
-          time: "06:23"
-        },
-        7: {
-          imgUrl: "../static/image/myNewsImg/message-activity@2x.png",
-          title: "八事通通知",
-          news: "尊敬的用户，非常抱歉的通知您，由于天气…",
+          "尊敬的用户，为了保障您的合法权益，为彻底贯彻实施相\n" +
+          "关法规，现正式地向您公示以下内容：\n" +
+          "1.您注册八事通免费机场大巴即同意注册用户协议；\n" +
+          "2.如遇特殊情况，我司员工有权要求您出示身份信息；\n" +
+          "3.大巴免费乘坐，请您实时关注路况，如耽误您的登机时\n" +
+          "间，我司盖不负责。",
           month: "04/20",
           time: "06:23"
         }
       }
-    };
+    }
   },
   methods: {
     goNewsDetail() {
@@ -106,6 +57,13 @@ export default {
   font-family: PingFangSC-Semibold;
   padding: 0 0.2rem 0.2rem;
   box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  background: #f2f2f2;
 }
 .detail-list-box {
   width: 100%;
@@ -114,7 +72,7 @@ export default {
 .detail-list-date {
   text-align: center;
   padding: 0.32rem 0;
-  font-size: 0.24rem;
+  font-size: 0.26rem;
 }
 .detail-month {
   font-size: 0.24rem;
@@ -136,7 +94,7 @@ export default {
   text-align: left;
   padding: 0.3rem;
 }
-
+.jiange{display: inline-block;padding: 0 0.02rem;}
 .detail-title-box {
   overflow: hidden;
 }

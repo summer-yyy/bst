@@ -3,14 +3,14 @@
     <div class="mask"></div>
     <div class="contentWrapper">
       <Dialog :title="title" :error="error" :btnText="btnText" :btnActive="checked&&btnActive" @btnClick="btnClick" @close="close">
-        <div class="content" v-show="step===1">
+        <div class="content" v-show="step===1"  v-bind:style="{  marginBottom : fontSize + 'rem' }">
           <span>+86</span>
           <img src="@/assets/image/phone-arrrow@2x.png">
           <div class="input">
            <bst-input v-model="phoneNum" :placeHolder="placeHolder" :iconShow="false" :maxLength="11" @input="input"></bst-input>
           </div>
         </div>
-        <div class="content codeWrapper" v-show="step===2">
+        <div class="content codeWrapper" v-show="step===2"   >
           <p>验证码发送至{{phoneNum}}</p>
           <div class="sendCode" :class="{active: intervalCode===0}" @click="sendCode">
             {{intervalCode === 0 ? '重新发送' : intervalCode + 's后重发'}}
@@ -54,7 +54,8 @@ export default {
       btnActive: false,
       codeActive: 1,
       code: "",
-      intervalCode: 0
+      intervalCode: 0,
+      fontSize:0.93
     };
   },
   methods: {
@@ -103,7 +104,8 @@ export default {
         this.btnActive = false;
         this.error = "";
       } else {
-        if (isNaN(val)) {
+        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+          if (!myreg.test(val)) {
           this.error = "手机号有误";
           this.btnActive = false;
         } else {
@@ -186,20 +188,24 @@ export default {
       display: flex;
       color: #9B9B9B;
       font-size: 0.26rem;
-      margin-top: 0.54rem;
-      margin-bottom: 0.93rem;
-      justify-content: center;
+      margin-top: 0.24rem;
       align-items: center;
-
+      span{
+        display inline-block;
+        margin-left 0.71rem;
+        font-family:PingFang-SC-Medium;
+        color: #9B9B9B;
+      }
       img {
-        width: 0.12rem;
-        height: 0.24rem;
+        width: 0.1344rem;
         margin: 0 0.18rem;
       }
 
       .input {
-        width: 2rem;
+        width: 2.5rem;
         overflow: hidden;
+        font-size :0.3rem;
+        margin:0;
       }
 
       .sendCode {

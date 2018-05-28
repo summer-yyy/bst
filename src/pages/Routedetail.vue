@@ -16,18 +16,19 @@
       请注意选择您的乘车方向
     </div>
     <div class="point-box">
-      <div class="route-detail-box" v-for="value in linesPoint" :key="value.id" @click="showPointDetail()">
+      <div class="route-detail-box" v-for="(value, index) in linesPoint" :key="value.id" @click="showPointDetail(index)">
         <div class="route-point">
-          <img src="">
+          <i class="isPosition"></i>
+          <i class="ishang" v-show ="index != (linesPoint.length - 1)"></i>
           <div class="route-point-text">{{value.targetName}}</div>
-          <div class="datadetail">
+          <div class="datadetail" v-show="value.showCarNumber">
             <span>沪34559 </span> <span> 还有1站</span>, <span>约10分钟</span>
           </div>
           <i class="go-icon"
-             v-if="!value.showPrompt"
+             v-show="!value.showCarNumber"
             ></i>
           <i class="go-icon-arrow"
-             v-if="value.showPrompt"
+             v-show="value.showCarNumber"
           ></i>
         </div>
         <div class="clear"></div>
@@ -47,6 +48,7 @@ export default {
     return {
       line: {},
       showPrompt: false,
+      showCarNumber:false,
       linesPoint: {
         0: {
           pointName: "虹桥T2航站楼",
@@ -64,21 +66,38 @@ export default {
     };
   },
   methods: {
-    showPointDetail() {
-      if (!this.showPrompt) {
-        this.linesPoint[index].showPrompt = true;
-      } else {
-        this.linesPoint[index].showPrompt = false;
+    showPointDetail(index) {
+      for(var i=0;i<this.linesPoint.length;i++){
+        if(i==index){
+
+        }else{
+          this.linesPoint[i].showCarNumber = false;
+        }
+
       }
+      if (!this.linesPoint[index].showCarNumber) {
+        this.linesPoint[index].showCarNumber = true;
+
+      } else {
+        this.linesPoint[index].showCarNumber = false;
+
+      }
+
     },
     getLines(lineId) {
       getData({
         url: "/api/v1/busline/queryBusLineTarget/" + lineId,
         data: { lineId },
         success: res => {
+
+          for(var i=0;i<res.obj.length;i++){
+              res.obj[i].showCarNumber = false;
+          }
           this.linesPoint = res.obj;
+          console.log( this.linesPoint);
         }
       });
+
     }
   },
   mounted() {
@@ -119,7 +138,7 @@ export default {
 }
 .line-title {
   overflow: hidden;
-  margin-left: 0.21rem;
+  margin-left: 0.3rem;
   padding-top: 0.4rem;
   margin-right: 0.32rem;
   border-bottom: 0.5px solid #979797;
@@ -139,7 +158,9 @@ export default {
 }
 .line-number span {
   position: absolute;
-  left: 0.04rem;
+  left: 0.02rem;
+  display: inline-block;
+  font-family: PingFangSC-Semibold;
 }
 .line-name {
   color: #333333;
@@ -154,8 +175,7 @@ export default {
 }
 .line-content {
   overflow: hidden;
-  padding-top: 0.225rem;
-  padding-left: 0.27rem;
+  padding-left: 0.3rem;
   color: #2f3338;
   font-weight: 600;
 }
@@ -173,7 +193,7 @@ export default {
   display: block;
   float: left;
   width: 0.34rem;
-  height: 0.34rem;
+  height: 0.5rem;
   background: url("../../static/image/routeImg/line-arrow-2@2x.png") no-repeat
     center;
   background-size: 100%;
@@ -211,6 +231,7 @@ export default {
   -webkit-border-radius: 0.04rem;
   -moz-border-radius: 0.04rem;
   border-radius: 0.04rem;
+
 }
 .route-point-text {
   float: left;
@@ -219,6 +240,7 @@ export default {
   line-height: 0.4rem;
   margin-top: 0.54rem;
   padding-bottom: 0.16rem;
+  font-weight: 600;
 }
 .prompt {
   width: 100%;
@@ -239,8 +261,31 @@ export default {
   position: absolute;
   color: #fb7629;
   font-size: 0.24rem;
+  top: 1rem;
+  font-weight: 600;
 }
 .clear {
   clear: both;
 }
+.isPosition{
+  display: block;
+  position: absolute;
+  width: 0.2rem;
+  height: 0.2rem;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #9B9B9B;
+  top: 0.64rem;
+  left: 0.34rem;
+}
+  .ishang{
+    display: block;
+    position: absolute;
+    width: 0.04rem;
+    height: 0.9rem;
+    background: #9b9b9b;
+    top: 0.84rem;
+    left: 0.42rem;
+  }
 </style>

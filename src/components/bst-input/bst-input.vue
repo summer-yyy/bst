@@ -62,6 +62,7 @@ export default {
     border none
     height 100%
     flex 1
-    margin 0 0.14rem
+    font-size:0.3rem
+    //margin 0 0.14rem
     color #2F3338
 </style>

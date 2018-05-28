@@ -36,6 +36,7 @@ export default {
         data: {},
         success: res => {
           this.lines = res.obj;
+
         }
       });
     }
@@ -65,7 +66,7 @@ export default {
 }
 .line-title {
   overflow: hidden;
-  padding-top: 0.26rem;
+  padding-top: 0.36rem;
   margin-left: 0.3rem;
 }
 .line-number {
@@ -79,10 +80,13 @@ export default {
   font-size: 0.16rem;
   line-height: 0.24rem;
   position: relative;
+  font-family: PingFangSC-Semibold;
 }
 .line-number span {
   position: absolute;
-  left: 0.04rem;
+  left: 0.02rem;
+  font-size: 0.16rem;
+  font-family: PingFangSC-Semibold;
 }
 .line-name {
   color: #333333;
@@ -127,7 +131,7 @@ export default {
   background: url("../../static/image/routeImg/add-more-normal@2x.png")
     no-repeat center;
   background-size: 100%;
-  right: 0.5rem;
-  top: 0.6rem;
+  right: 0.3rem;
+  top: 0.66rem;
 }
 </style>

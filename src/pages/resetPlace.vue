@@ -9,6 +9,7 @@
           <img class="icon" src="@/assets/image/location-normal@2x.png"/>
           当前位置
         </div>
+        <div class="hang"></div>
         <div class="btn" @click="mapShow=true">
           <img class="icon" src="@/assets/image/map-normal@2x.png"/>
           地图选点
@@ -72,7 +73,6 @@ export default {
           let geolocation = new AMap.Geolocation({ enableHighAccuracy: true });
           geolocation.getCurrentPosition((status, result) => {
             if (result && result.position) {
-              console.log(result);
 
               this.addressName = result.formattedAddress;
               this.longitude = result.position.lng;
@@ -87,7 +87,6 @@ export default {
         moveend: () => {},
         zoomchange: () => {},
         click: e => {
-          console.log(e);
           let { lng, lat } = e.lnglat;
           this.longitude = lng;
           this.latitude = lat;
@@ -100,7 +99,6 @@ export default {
           geocoder.getAddress([lng, lat], (status, result) => {
             if (status === "complete" && result.info === "OK") {
               if (result && result.regeocode) {
-                console.log(result);
                 this.addressName = result.regeocode.formattedAddress;
                 this.$nextTick();
               }
@@ -157,7 +155,6 @@ export default {
       let autocomplete = new AMap.Autocomplete();
       autocomplete.search(val, (status, result) => {
         if (result && result.tips) {
-          console.log(result);
           this.result = result.tips
             .filter(item => {
               return item.location.lat && item.location.lng;
@@ -376,14 +373,23 @@ export default {
       line-height: 1rem;
       font-size: 0.28rem;
       align-items: center;
-
+      position: relative;
+      .hang{
+        position: absolute;
+        display: block;
+        width:0.5rem;
+        height:0.4rem;
+        border-left :0.01rem solid #e7e7e7;
+        top:0.3rem;
+        left:50%;
+      }
       .btn {
         flex: 1;
         text-align: center;
 
         &.location {
           color: #70C1FF;
-          border-right: 0.5px #E7E7E7 solid;
+
         }
       }
     }
@@ -393,4 +399,9 @@ export default {
     margin-top: 0.3rem;
   }
 }
+  .bst-input{
+    .input{
+      margin-left 0.2rem;
+    }
+  }
 </style>
