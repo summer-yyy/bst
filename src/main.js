@@ -6,6 +6,7 @@ import router from './router'
 import Axios from 'axios'
 import VueAMap from 'vue-amap'
 import '@/assets/css/reset.css'
+import 'jquery'
 
 Vue.use(VueAMap)
 Vue.config.productionTip = false

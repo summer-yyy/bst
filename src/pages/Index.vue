@@ -11,10 +11,10 @@
 
         </div>
         <div class="end-position">
-          <i class="circle yellow-circle"></i>
-          <input type="text" placeholder="请输入目的地或路线名称" v-model="endPosition.address" @input="autocomplete(endPosition.address, 'end')"/>
+        <i class="circle yellow-circle"></i>
+        <input type="text" placeholder="请输入目的地或路线名称" v-model="endPosition.address" @input="autocomplete(endPosition.address, 'end')"/>
 
-        </div>
+      </div>
       </div>
       <div class="now-position-right">
         <div class="sreach-btn" @click="search">
@@ -22,15 +22,18 @@
         </div>
       </div>
     </div>
-    <div class="result">
-      <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)">
-        <img class="item-icon" src="@/assets/image/site@2x.png" />
-        <div class="content">
-          <p class="title">{{item.name}}</p>
-          <p class="text">{{typeof item.address === 'string' ? item.address : item.district}}</p>
+    <transition name="fade">
+      <div class="result" v-show="result">
+        <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)">
+          <img class="item-icon" src="@/assets/image/site@2x.png" />
+          <div class="content">
+            <p class="title">{{item.name}}</p>
+            <p class="text">{{typeof item.address === 'string' ? item.address : item.district}}</p>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
+
     <div class="card-show usual-address">
       <itemWrapper :title="title1" :icon="icon1" @iconClick="goAddress()">
         <div class="itemWrapper">
@@ -240,12 +243,14 @@ export default {
             .slice(0, 5);
           this[this.target + "Position"].lng = this.result[0].location.lng;
           this[this.target + "Position"].lat = this.result[0].location.lat;
+
         } else {
           this[this.target + "Position"].lng = "";
           this[this.target + "Position"].lat = "";
           this.result = [];
         }
       });
+      $('.result').slideDown(5000);
     },
     // 定位
     getLocation() {
@@ -291,7 +296,12 @@ export default {
   font-family: PingFangSC-Regular;
   padding: 0.2rem;
 }
-
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 .headerImg {
   width: 100%;
   height: 2.28rem;
