@@ -171,7 +171,7 @@ export default {
       let map = amapManager.getMap();
       // this.setCirle(this.busLine);
       this.setLine(this.busLine);
-      map.setFitView();
+      // map.setFitView();
     }, 100);
   }
 };

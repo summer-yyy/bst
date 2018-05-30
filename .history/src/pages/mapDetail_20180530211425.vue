@@ -104,7 +104,7 @@ export default {
             if (result && result.position) {
               this.longitude = result.position.lng;
               this.latitude = result.position.lat;
-              // this.center = [this.longitude, this.latitude];
+              this.center = [this.longitude, this.latitude];
               this.$nextTick();
             }
           });
@@ -171,7 +171,7 @@ export default {
       let map = amapManager.getMap();
       // this.setCirle(this.busLine);
       this.setLine(this.busLine);
-      map.setFitView();
+      // map.setFitView();
     }, 100);
   }
 };
