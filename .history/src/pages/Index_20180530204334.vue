@@ -298,9 +298,9 @@ export default {
   padding: 0.2rem;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity 3s;
 }
-.fade-enter, .fade-leave-to{
+.fade-enter-to, .fade-leave-to{
   opacity: 0;
 }
 .headerImg {

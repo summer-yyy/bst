@@ -299,9 +299,11 @@ export default {
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
+  top: 100px;
 }
 .fade-enter, .fade-leave-to{
   opacity: 0;
+  top: 0;
 }
 .headerImg {
   width: 100%;

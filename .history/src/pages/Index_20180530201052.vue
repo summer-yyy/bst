@@ -23,7 +23,7 @@
       </div>
     </div>
     <transition name="fade">
-      <div class="result" v-show="result.length>0">
+      <div class="result" v-show="result">
         <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)"   v-bind:style="{ background: backgroundcolor }">
           <img class="item-icon" src="@/assets/image/site@2x.png" />
           <div class="content">
@@ -252,6 +252,7 @@ export default {
           this.result = [];
         }
       });
+      $('.result').slideDown(5000);
     },
     // 定位
     getLocation() {
@@ -297,12 +298,7 @@ export default {
   font-family: PingFangSC-Regular;
   padding: 0.2rem;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to{
-  opacity: 0;
-}
+
 .headerImg {
   width: 100%;
   height: 2.28rem;
@@ -373,6 +369,7 @@ export default {
   position: absolute;
   width: calc(100% - 0.4rem);
   box-sizing: border-box;
+
   .item {
     display: flex;
     align-items: center;

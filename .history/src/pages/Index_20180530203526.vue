@@ -297,10 +297,13 @@ export default {
   font-family: PingFangSC-Regular;
   padding: 0.2rem;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active {
+  transition: all .3s ease;
 }
-.fade-enter, .fade-leave-to{
+.fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter, .fade-leave-to,.fade-leave-active {
   opacity: 0;
 }
 .headerImg {

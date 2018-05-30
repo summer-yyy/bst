@@ -297,10 +297,14 @@ export default {
   font-family: PingFangSC-Regular;
   padding: 0.2rem;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active {
+  transition: all .3s ease;
 }
-.fade-enter, .fade-leave-to{
+.fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter, .fade-leave-to,.fade-leave-active {
+  transform: translateX(10px);
   opacity: 0;
 }
 .headerImg {
@@ -373,6 +377,11 @@ export default {
   position: absolute;
   width: calc(100% - 0.4rem);
   box-sizing: border-box;
+  transition: height 2s;
+  height: 100px;
+  &:hover{
+    height: 200px;
+  }
   .item {
     display: flex;
     align-items: center;

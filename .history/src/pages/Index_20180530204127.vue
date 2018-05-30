@@ -298,10 +298,10 @@ export default {
   padding: 0.2rem;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: height 3s;
 }
 .fade-enter, .fade-leave-to{
-  opacity: 0;
+  height: 0;
 }
 .headerImg {
   width: 100%;

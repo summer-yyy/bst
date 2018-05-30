@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <transition name="fade">
+    <!-- <transition name="fade"> -->
       <div class="result" v-show="result.length>0">
         <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)"   v-bind:style="{ background: backgroundcolor }">
           <img class="item-icon" src="@/assets/image/site@2x.png" />
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-    </transition>
+    <!-- </transition> -->
 
     <div class="card-show usual-address">
       <itemWrapper :title="title1" :icon="icon1" @iconClick="goAddress()">
@@ -297,10 +297,14 @@ export default {
   font-family: PingFangSC-Regular;
   padding: 0.2rem;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active {
+  transition: all .3s ease;
 }
-.fade-enter, .fade-leave-to{
+.fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter, .fade-leave-to,.fade-leave-active {
+  transform: translateX(10px);
   opacity: 0;
 }
 .headerImg {
@@ -373,6 +377,7 @@ export default {
   position: absolute;
   width: calc(100% - 0.4rem);
   box-sizing: border-box;
+  transition: height 2s;
   .item {
     display: flex;
     align-items: center;

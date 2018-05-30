@@ -300,7 +300,7 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
-.fade-enter, .fade-leave-to{
+.fade-enter, .fade-leave-to , .fade-leave-active {
   opacity: 0;
 }
 .headerImg {

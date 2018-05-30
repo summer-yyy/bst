@@ -298,7 +298,7 @@ export default {
   padding: 0.2rem;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity 3s;
 }
 .fade-enter, .fade-leave-to{
   opacity: 0;
@@ -373,6 +373,7 @@ export default {
   position: absolute;
   width: calc(100% - 0.4rem);
   box-sizing: border-box;
+  height: 100px;
   .item {
     display: flex;
     align-items: center;

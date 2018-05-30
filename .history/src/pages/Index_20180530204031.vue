@@ -298,7 +298,8 @@ export default {
   padding: 0.2rem;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity 3s;
+  opacity: 1;
 }
 .fade-enter, .fade-leave-to{
   opacity: 0;

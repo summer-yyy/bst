@@ -23,7 +23,7 @@
       </div>
     </div>
     <transition name="fade">
-      <div class="result" v-show="result.length>0">
+      <div class="result" v-show="result">
         <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)"   v-bind:style="{ background: backgroundcolor }">
           <img class="item-icon" src="@/assets/image/site@2x.png" />
           <div class="content">
@@ -298,10 +298,11 @@ export default {
   padding: 0.2rem;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: height .5s;
+  height: 200px;
 }
-.fade-enter, .fade-leave-to{
-  opacity: 0;
+.fade-enter, .fade-leave-active ,.fade-leave-to{
+  height: 0;
 }
 .headerImg {
   width: 100%;
@@ -373,6 +374,7 @@ export default {
   position: absolute;
   width: calc(100% - 0.4rem);
   box-sizing: border-box;
+  transition: height 2s
   .item {
     display: flex;
     align-items: center;
