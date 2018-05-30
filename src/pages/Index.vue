@@ -24,11 +24,12 @@
     </div>
     <transition name="fade">
       <div class="result" v-show="result">
-        <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)">
+        <div class="item" v-for="(item, index) in result" :key="index" @click="setPosition(item)"   v-bind:style="{ background: backgroundcolor }">
           <img class="item-icon" src="@/assets/image/site@2x.png" />
           <div class="content">
             <p class="title">{{item.name}}</p>
             <p class="text">{{typeof item.address === 'string' ? item.address : item.district}}</p>
+            <div class="imgBox"><img src="../../static/image/indexImg/indexgo.png"/> </div>
           </div>
         </div>
       </div>
@@ -92,6 +93,7 @@ export default {
       icon1: require("@/assets/image/add-more-normal@2x.png"),
       msgStr: "../assets/image/indexImg",
       location: {},
+      backgroundcolor:'#fff',
       endPosition: {
         address: ""
       }, //目的地位置input
@@ -395,8 +397,20 @@ export default {
       float: left;
       margin-left: 0.2rem;
       flex: 1;
+      position: relative
     }
+    .imgBox{
+      position: absolute;
+      width :0.4rem;
+      height:0.4rem;
+      top:0.20rem;
+      right:0rem;
 
+    }
+    .imgBox img{
+      width:100%;
+      display block;
+    }
     .title {
       height: 0.4rem;
       line-height: 0.4rem;
